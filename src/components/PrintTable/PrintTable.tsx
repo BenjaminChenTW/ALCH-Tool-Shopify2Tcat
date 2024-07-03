@@ -328,7 +328,7 @@ export default function PrintTable(props: Readonly<{ data: TcatOrder[] }>) {
           // }}
           dataSource={data}
           scroll={{ x: 3500 }}
-          style={{ padding: "0 24px" }}
+          style={{ padding: "0 24px 24px 24px" }}
           pagination={false}
           bordered
         />
