@@ -1,6 +1,7 @@
-import { Form, FormInstance, Input, InputNumber, InputRef } from "antd";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import type TcatOrder from "types/TcatOrder.interface";
+import { Form, Input, InputRef } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+
+import TcatOrder from "../../types/TcatOrder.interface";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   title: string;

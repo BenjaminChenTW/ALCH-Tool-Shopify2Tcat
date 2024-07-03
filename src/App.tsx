@@ -136,19 +136,6 @@ export default function App() {
     setPayment(e.target.value);
   };
 
-  const handleOnFileChange: React.ChangeEventHandler<HTMLInputElement> = (
-    e
-  ) => {
-    const file = e.target.files && e.target.files[0];
-    setFile(file);
-    if (!file) {
-      clearStates();
-      return;
-    }
-    setExportArray(null);
-    setStatusText("選擇完畢請點擊「上傳檔案」");
-  };
-
   const handleOnFileSubmit: React.MouseEventHandler<HTMLButtonElement> = (
     e
   ) => {
