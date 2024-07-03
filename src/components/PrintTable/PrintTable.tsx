@@ -1,11 +1,11 @@
 // const valueOverrideMapping
 
 import { Form, Table, TableProps, Typography } from "antd";
-import type { ColumnType } from "antd/es/table/interface";
-import EditableCell from "components/EditableCell";
 import { useEffect, useState } from "react";
-import type TcatOrder from "types/TcatOrder.interface";
 
+import TcatOrder from "../../types/TcatOrder.interface";
+
+import type { ColumnType } from "antd/es/table/interface";
 type TcatOrderRecord = TcatOrder & { key: string };
 
 const columns = [
@@ -162,16 +162,16 @@ const columns = [
     key: "love_code",
     width: 110,
   },
-]!;
+];
 
 const { Title } = Typography;
 
-export default function PrintTable(props: { data: TcatOrder[] | null }) {
+export default function PrintTable(props: Readonly<{ data: TcatOrder[] }>) {
   const { data: originData } = props;
 
   const [data, setData] = useState<TcatOrderRecord[]>([]);
 
-  const [editingKey, setEditingKey] = useState<React.Key>("");
+  // const [editingKey, setEditingKey] = useState<React.Key>("");
 
   const [form] = Form.useForm();
 
@@ -188,39 +188,37 @@ export default function PrintTable(props: { data: TcatOrder[] | null }) {
     );
   }, [originData]);
 
-  useEffect(() => {
-    console.log("editingKey", editingKey);
-    const record = data.find((row) => row.key === editingKey);
-    if (record) form.setFieldsValue({ ...record });
-  }, [editingKey]);
+  // useEffect(() => {
+  //   console.log("editingKey", editingKey);
+  //   const record = data.find((row) => row.key === editingKey);
+  //   if (record) form.setFieldsValue({ ...record });
+  // }, [editingKey]);
 
-  if (data.length === 0) return null;
+  // const save = async (key: React.Key) => {
+  //   try {
+  //     const row = (await form.validateFields()) as TcatOrderRecord;
 
-  const save = async (key: React.Key) => {
-    try {
-      const row = (await form.validateFields()) as TcatOrderRecord;
+  //     const newData = [...data];
+  //     const index = newData.findIndex((item) => key === item.key);
+  //     if (index > -1) {
+  //       const item = newData[index];
+  //       newData.splice(index, 1, {
+  //         ...item,
+  //         ...row,
+  //       });
+  //       setData(newData);
+  //       setEditingKey("");
+  //     } else {
+  //       newData.push(row);
+  //       setData(newData);
+  //       setEditingKey("");
+  //     }
+  //   } catch (errInfo) {
+  //     console.log("Validate Failed:", errInfo);
+  //   }
+  // };
 
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        setData(newData);
-        setEditingKey("");
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey("");
-      }
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
-    }
-  };
-
-  const mergedColumns: TableProps<TcatOrderRecord>["columns"] = columns!.map(
+  const mergedColumns: TableProps<TcatOrderRecord>["columns"] = columns.map(
     (col) => ({
       ...col,
       fixed: col.fixed as ColumnType<TcatOrderRecord>["fixed"],
@@ -240,7 +238,14 @@ export default function PrintTable(props: { data: TcatOrder[] | null }) {
 
   return (
     <>
-      <Title level={2}>黑貓托運單預覽</Title>
+      <Title
+        level={2}
+        style={{
+          textAlign: "center",
+        }}
+      >
+        黑貓托運單預覽
+      </Title>
       <Form form={form} component={false}>
         <Table
           columns={mergedColumns}

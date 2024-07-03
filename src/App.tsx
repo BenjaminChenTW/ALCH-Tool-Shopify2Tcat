@@ -1,21 +1,33 @@
-import { UploadOutlined } from "@ant-design/icons";
+import "./App.css";
+
 import {
   Button,
+  Col,
+  ConfigProvider,
+  Divider,
   Form,
+  Layout,
   Radio,
   RadioChangeEvent,
+  Row,
+  Typography,
   Upload,
   UploadProps,
 } from "antd";
-import classNames from "classnames";
-import * as csv from "csv/lib/sync";
+import { Content, Header } from "antd/es/layout/layout";
+import * as csv from "csv/sync";
 import parsePhoneNumber from "libphonenumber-js";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { UploadOutlined } from "@ant-design/icons";
+
 import PrintTable from "./components/PrintTable";
 import TransformError from "./errors/TransformError";
-import "./styles.css";
+
 import type TcatOrder from "./types/TcatOrder.interface";
+
+const { Title, Link } = Typography;
 
 const getColumn = (orderRecord: Record<string, string>, key: string) => {
   if (typeof orderRecord[key] === "undefined")
@@ -93,8 +105,6 @@ export default function App() {
   const [exportCsv, setExportCsv] = useState<string | null>(null);
   const [exportArray, setExportArray] = useState<TcatOrder[] | null>(null);
   const [downloadFileName, setDownloadFileName] = useState<string | null>(null);
-
-  const downloadButtonRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     if (!exportArray) {
@@ -175,46 +185,89 @@ export default function App() {
       setFile(file);
       return false;
     },
+    onRemove: () => {
+      setFile(null);
+      clearStates();
+    },
   };
 
   return (
-    <div className="App">
-      <h1>Shopify 訂單轉換黑貓托運單</h1>
-
-      <Form labelCol={{ span: 4 }} wrapperCol={{ span: 14 }}>
-        <Form.Item label="付款方式">
-          <Radio.Group onChange={handleOnPaymentChange} value={payment}>
-            <Radio value={"paid"}>已付款</Radio>
-            <Radio value={"cash_on_delivery"}>貨到付款</Radio>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item label="Shopify 訂單 CSV">
-          <Upload {...uploadProps}>
-            <Button icon={<UploadOutlined />}>選擇檔案</Button>
-          </Upload>
-        </Form.Item>
-      </Form>
-
-      <p>{statusText}</p>
-
-      <br />
-
-      {exportCsv ? (
-        <a
-          ref={downloadButtonRef}
-          className={classNames({
-            Disable: !exportCsv,
-          })}
-          href={`data:application/octet-stream,${encodeURIComponent(
-            exportCsv
-          )}`}
-          download={downloadFileName}
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#a67a2b",
+        },
+      }}
+    >
+      <Layout>
+        <Header
+          style={{
+            height: "unset",
+          }}
         >
-          下載黑貓托運單 CSV
-        </a>
-      ) : null}
+          <Title
+            style={{
+              textAlign: "center",
+              color: "#fff",
+              margin: "16px 0",
+            }}
+          >
+            Shopify 訂單轉換黑貓托運單
+          </Title>
+        </Header>
+        <Content style={{ paddingTop: "24px" }}>
+          <Row justify={"center"}>
+            <Col>{`操作提示：${statusText}`}</Col>
+          </Row>
+          <Divider />
+          <Form
+            labelCol={{ span: 5 }}
+            style={{ padding: "0 24px" }}
+            className="submitForm"
+          >
+            <Form.Item label="付款方式">
+              <Radio.Group onChange={handleOnPaymentChange} value={payment}>
+                <Radio value={"paid"}>已付款</Radio>
+                <Radio value={"cash_on_delivery"}>貨到付款</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item label="Shopify 訂單 CSV">
+              <Upload {...uploadProps}>
+                <Button icon={<UploadOutlined />}>選擇檔案</Button>
+              </Upload>
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 5 }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={handleOnFileSubmit}
+              >
+                轉換
+              </Button>
+            </Form.Item>
+          </Form>
 
-      <PrintTable data={exportArray} />
-    </div>
+          {exportCsv && exportArray ? (
+            <>
+              <Divider />
+              <Row justify={"center"}>
+                <Col>
+                  <Link
+                    href={`data:application/octet-stream,${encodeURIComponent(
+                      exportCsv
+                    )}`}
+                    download={downloadFileName}
+                  >
+                    下載黑貓托運單 CSV
+                  </Link>
+                </Col>
+              </Row>
+              <Divider />
+              <PrintTable data={exportArray} />
+            </>
+          ) : null}
+        </Content>
+      </Layout>
+    </ConfigProvider>
   );
 }
