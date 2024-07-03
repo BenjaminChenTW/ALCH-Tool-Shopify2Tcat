@@ -113,7 +113,7 @@ export default function App() {
     }
     const exportCsv = csv.stringify(exportArray, { header: true });
     setExportCsv(exportCsv);
-    setDownloadFileName(`order_${moment().format("YYYYMMDDHHmmsss")}.csv`);
+    setDownloadFileName(`tcat_${moment().format("YYYYMMDDHHmmsss")}.csv`);
   }, [exportArray]);
 
   const transformToExport = (text: string): TcatOrder[] => {
@@ -223,7 +223,7 @@ export default function App() {
                 <Button icon={<UploadOutlined />}>選擇檔案</Button>
               </Upload>
             </Form.Item>
-            <Form.Item wrapperCol={{ offset: 5 }}>
+            <Form.Item wrapperCol={{ sm: { offset: 5 } }}>
               <Button
                 type="primary"
                 htmlType="submit"
