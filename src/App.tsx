@@ -223,7 +223,7 @@ export default function App() {
                 <Button icon={<UploadOutlined />}>選擇檔案</Button>
               </Upload>
             </Form.Item>
-            <Form.Item wrapperCol={{ offset: 5 }}>
+            <Form.Item wrapperCol={{ sm: { offset: 5 } }}>
               <Button
                 type="primary"
                 htmlType="submit"
