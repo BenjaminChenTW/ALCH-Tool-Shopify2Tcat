@@ -113,7 +113,7 @@ export default function App() {
     }
     const exportCsv = csv.stringify(exportArray, { header: true });
     setExportCsv(exportCsv);
-    setDownloadFileName(`order_${moment().format("YYYYMMDDHHmmsss")}.csv`);
+    setDownloadFileName(`tcat_${moment().format("YYYYMMDDHHmmsss")}.csv`);
   }, [exportArray]);
 
   const transformToExport = (text: string): TcatOrder[] => {
