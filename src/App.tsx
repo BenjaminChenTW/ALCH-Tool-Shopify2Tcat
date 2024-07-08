@@ -1,29 +1,19 @@
-import "./App.css";
+import './App.css';
 
 import {
-  Button,
-  Col,
-  ConfigProvider,
-  Divider,
-  Form,
-  Layout,
-  Radio,
-  RadioChangeEvent,
-  Row,
-  Typography,
-  Upload,
-  UploadProps,
-} from "antd";
-import { Content, Header } from "antd/es/layout/layout";
-import * as csv from "csv/sync";
-import parsePhoneNumber from "libphonenumber-js";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
+    Button, Col, ConfigProvider, Divider, Form, Layout, Radio, RadioChangeEvent, Row, Typography,
+    Upload, UploadProps
+} from 'antd';
+import { Content, Header } from 'antd/es/layout/layout';
+import * as csv from 'csv/sync';
+import parsePhoneNumber from 'libphonenumber-js';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from '@ant-design/icons';
 
-import PrintTable from "./components/PrintTable";
-import TransformError from "./errors/TransformError";
+import PrintTable from './components/PrintTable';
+import TransformError from './errors/TransformError';
 
 import type TcatOrder from "./types/TcatOrder.interface";
 
@@ -148,7 +138,7 @@ export default function App() {
         if (!text || typeof text !== "string")
           throw new TransformError("不支援的檔案格式");
         const exportArray = transformToExport(text);
-        setStatusText("上傳成功！");
+        setStatusText("轉換成功！");
         setExportArray(exportArray);
         const exportCsv = csv.stringify(exportArray, { header: true });
         setExportCsv(exportCsv);
@@ -159,7 +149,7 @@ export default function App() {
           return;
         }
         console.error(e);
-        setStatusText("上傳失敗！請找工程師協助");
+        setStatusText("轉換失敗！請找工程師協助");
       }
     };
     fileReader.readAsText(file);
