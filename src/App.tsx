@@ -1,19 +1,29 @@
-import './App.css';
+import "./App.css";
 
 import {
-    Button, Col, ConfigProvider, Divider, Form, Layout, Radio, RadioChangeEvent, Row, Typography,
-    Upload, UploadProps
-} from 'antd';
-import { Content, Header } from 'antd/es/layout/layout';
-import * as csv from 'csv/sync';
-import parsePhoneNumber from 'libphonenumber-js';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+  Button,
+  Col,
+  ConfigProvider,
+  Divider,
+  Form,
+  Layout,
+  Radio,
+  RadioChangeEvent,
+  Row,
+  Typography,
+  Upload,
+  UploadProps,
+} from "antd";
+import { Content, Header } from "antd/es/layout/layout";
+import * as csv from "csv/sync";
+import parsePhoneNumber from "libphonenumber-js";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from "@ant-design/icons";
 
-import PrintTable from './components/PrintTable';
-import TransformError from './errors/TransformError';
+import PrintTable from "./components/PrintTable";
+import TransformError from "./errors/TransformError";
 
 import type TcatOrder from "./types/TcatOrder.interface";
 
@@ -155,6 +165,18 @@ export default function App() {
     fileReader.readAsText(file);
   };
 
+  const handleDuplicate = function (index: number) {
+    if (!exportArray) return;
+    exportArray.splice(index, 0, Object.assign({}, exportArray[index]));
+    setExportArray([...exportArray]);
+  };
+
+  const handleRemove = function (index: number) {
+    if (!exportArray) return;
+    exportArray.splice(index, 1);
+    setExportArray([...exportArray]);
+  };
+
   const uploadProps: UploadProps = {
     accept: ".csv",
     maxCount: 1,
@@ -240,7 +262,13 @@ export default function App() {
                 </Col>
               </Row>
               <Divider />
-              <PrintTable data={exportArray} />
+              <PrintTable
+                data={exportArray}
+                action={{
+                  duplicate: handleDuplicate,
+                  remove: handleRemove,
+                }}
+              />
             </>
           ) : null}
         </Content>

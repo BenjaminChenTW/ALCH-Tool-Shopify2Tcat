@@ -5,7 +5,10 @@ import TcatOrder from "../../types/TcatOrder.interface";
 
 type TcatOrderRecord = TcatOrder & { key: string };
 
-const columns: TableProps<TcatOrderRecord>["columns"] = [
+const columns: (action: {
+  duplicate: (index: number) => void;
+  remove: (index: number) => void;
+}) => TableProps<TcatOrderRecord>["columns"] = ({ duplicate, remove }) => [
   {
     title: "收件人名稱",
     dataIndex: "收件人名稱",
@@ -210,12 +213,38 @@ const columns: TableProps<TcatOrderRecord>["columns"] = [
     dataIndex: "愛心碼",
     key: "love_code",
   },
+  {
+    title: "操作",
+    key: "operation",
+    fixed: "right",
+    render: (_text, _record, index) => {
+      return (
+        <div
+          style={{
+            display: "flex",
+            gap: "6px",
+          }}
+        >
+          <a onClick={() => duplicate(index)}>複製</a>
+          <a onClick={() => remove(index)}>刪除</a>
+        </div>
+      );
+    },
+  },
 ];
 
 const { Title } = Typography;
 
-export default function PrintTable(props: Readonly<{ data: TcatOrder[] }>) {
-  const { data: originData } = props;
+export default function PrintTable(
+  props: Readonly<{
+    data: TcatOrder[];
+    action: {
+      duplicate: (index: number) => void;
+      remove: (index: number) => void;
+    };
+  }>
+) {
+  const { data: originData, action } = props;
 
   const [data, setData] = useState<TcatOrderRecord[]>([]);
 
@@ -296,7 +325,7 @@ export default function PrintTable(props: Readonly<{ data: TcatOrder[] }>) {
       </Title>
       <Form form={form} component={false}>
         <Table
-          columns={columns}
+          columns={columns(action)}
           // components={{
           //   body: {
           //     cell: EditableCell,
