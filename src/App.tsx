@@ -1,29 +1,19 @@
-import "./App.css";
+import './App.css';
 
 import {
-  Button,
-  Col,
-  ConfigProvider,
-  Divider,
-  Form,
-  Layout,
-  Radio,
-  RadioChangeEvent,
-  Row,
-  Typography,
-  Upload,
-  UploadProps,
-} from "antd";
-import { Content, Header } from "antd/es/layout/layout";
-import * as csv from "csv/sync";
-import parsePhoneNumber from "libphonenumber-js";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
+    Button, Col, ConfigProvider, Divider, Form, Layout, Radio, RadioChangeEvent, Row, Typography,
+    Upload, UploadProps
+} from 'antd';
+import { Content, Header } from 'antd/es/layout/layout';
+import * as csv from 'csv/sync';
+import parsePhoneNumber from 'libphonenumber-js';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from '@ant-design/icons';
 
-import PrintTable from "./components/PrintTable";
-import TransformError from "./errors/TransformError";
+import PrintTable from './components/PrintTable';
+import TransformError from './errors/TransformError';
 
 import type TcatOrder from "./types/TcatOrder.interface";
 
@@ -48,7 +38,7 @@ const getDeliverTemp = (text: string) => {
 
 const transformRecord =
   (payment: string) =>
-  (orderRecord: any): TcatOrder => {
+  (orderRecord: Record<string, string>): TcatOrder => {
     const parsedPhone = parsePhoneNumber(
       getColumn(orderRecord, "Shipping Phone"),
       "TW"
