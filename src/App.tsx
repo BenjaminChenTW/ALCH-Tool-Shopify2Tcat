@@ -1,29 +1,19 @@
-import "./App.css";
+import './App.css';
 
 import {
-  Button,
-  Col,
-  ConfigProvider,
-  Divider,
-  Form,
-  Layout,
-  Radio,
-  RadioChangeEvent,
-  Row,
-  Typography,
-  Upload,
-  UploadProps,
-} from "antd";
-import { Content, Header } from "antd/es/layout/layout";
-import * as csv from "csv/sync";
-import parsePhoneNumber from "libphonenumber-js";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
+    Button, Col, ConfigProvider, Divider, Form, Layout, Radio, RadioChangeEvent, Row, Typography,
+    Upload, UploadProps
+} from 'antd';
+import { Content, Header } from 'antd/es/layout/layout';
+import * as csv from 'csv/sync';
+import parsePhoneNumber from 'libphonenumber-js';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined } from '@ant-design/icons';
 
-import PrintTable from "./components/PrintTable";
-import TransformError from "./errors/TransformError";
+import PrintTable from './components/PrintTable';
+import TransformError from './errors/TransformError';
 
 import type TcatOrder from "./types/TcatOrder.interface";
 
@@ -48,7 +38,7 @@ const getDeliverTemp = (text: string) => {
 
 const transformRecord =
   (payment: string) =>
-  (orderRecord: any): TcatOrder => {
+  (orderRecord: Record<string, string>): TcatOrder => {
     const parsedPhone = parsePhoneNumber(
       getColumn(orderRecord, "Shipping Phone"),
       "TW"
@@ -84,7 +74,7 @@ const transformRecord =
       "溫層((詳參數表))": getDeliverTemp(getColumn(orderRecord, "Notes")),
       "尺寸((詳參數表))": "1",
       寄件人姓名: "華恩菸酒",
-      寄件人電話: "06-2973838",
+      寄件人電話: "06-2973896",
       寄件人手機: "",
       寄件人地址: "台南市安平區建平十二街65號",
       "保值金額(20001~10萬之間)-會產生額外費用": "",
